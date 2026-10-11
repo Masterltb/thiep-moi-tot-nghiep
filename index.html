@@ -795,17 +795,14 @@
   <canvas id="cf"></canvas>
   <div id="toast" class="toast"></div>
 
-  <!-- Thanh chọn nhanh khách mời -->
-  <div class="guest-bar" id="guestBar">
-    <label for="guestSelect">⚖️ Khách mời:</label>
-    <select id="guestSelect" aria-label="Chọn khách mời"></select>
-    <button class="btn-sm" id="copyCurrentLink" title="Copy link mời cho người này">📋 Copy link</button>
-  </div>
-
   <div id="cover" role="button" tabindex="0" aria-label="Mở giấy triệu tập">
     <div class="notif nb">
       <div class="ic">⚖️</div>
-      <div><b>Bạn có 1 giấy triệu tập mới</b><span id="from"></span></div>
+      <div>
+        <b>Bạn có 1 giấy triệu tập mới</b>
+        <span id="from"></span>
+        <span id="toGuestCover" style="display:block;font-size:14.5px;color:var(--org);font-weight:700;margin-top:3px"></span>
+      </div>
     </div>
     <div class="tap">chạm vào đây nè 👆</div>
   </div>
@@ -1013,8 +1010,8 @@
       }
     }
 
-    // Cập nhật thông tin linh hoạt theo tên khách
-    function applyGuest(name, updateUrl = false) {
+    // Cập nhật thông tin linh hoạt theo tên khách từ URL
+    function applyGuest(name) {
       currentGuest = (name || '').trim();
       const displayName = currentGuest || 'Bạn thân mến';
       $('guest').textContent = displayName;
@@ -1022,16 +1019,6 @@
       if (toCover) toCover.textContent = currentGuest ? ('Kính gửi: ' + currentGuest) : '';
       const rsvp = $('rsvpTitle');
       if (rsvp) rsvp.textContent = currentGuest ? (`Bạn ${currentGuest} trả lời sao?`) : 'Bạn trả lời sao?';
-
-      if ($('guestSelect')) {
-        $('guestSelect').value = currentGuest;
-      }
-
-      if (updateUrl && currentGuest) {
-        const u = new URL(location.href);
-        u.searchParams.set('name', currentGuest);
-        history.replaceState(null, '', u.toString());
-      }
     }
 
     // Khởi tạo thông tin cơ bản
@@ -1071,38 +1058,7 @@
       f.append(ph, c, s); $('photos').append(f);
     });
 
-    // Setup guest selector bar
-    const sel = $('guestSelect');
-    if (sel) {
-      const defOpt = document.createElement('option');
-      defOpt.value = ''; defOpt.textContent = '-- Chọn khách (29 người) --';
-      sel.appendChild(defOpt);
-      GUEST_LIST.forEach((g, idx) => {
-        const opt = document.createElement('option');
-        opt.value = g;
-        opt.textContent = `${idx + 1}. ${g}`;
-        if (g.toLowerCase() === currentGuest.toLowerCase()) opt.selected = true;
-        sel.appendChild(opt);
-      });
-      sel.onchange = () => {
-        if (sel.value) {
-          applyGuest(sel.value, true);
-          showToast(`Đã chuyển sang thiệp của: ${sel.value} ✨`);
-        } else {
-          applyGuest('', true);
-        }
-      };
-    }
-    if ($('copyCurrentLink')) {
-      $('copyCurrentLink').onclick = () => {
-        const targetName = currentGuest || (sel && sel.value) || '';
-        const u = new URL(location.href);
-        if (targetName) u.searchParams.set('name', targetName);
-        copyText(u.toString(), `Đã copy link mời của: ${targetName || 'Bạn thân mến'}!`);
-      };
-    }
-
-    // Áp dụng tên khách ban đầu
+    // Áp dụng tên khách ban đầu từ URL (?name=...)
     applyGuest(currentGuest, false);
 
     // Cover
