@@ -928,7 +928,7 @@
       <button class="btn alt" id="no">Kháng cáo ✋</button>
     </div>
     <div id="verdict" aria-live="polite"></div>
-    <a class="btn" id="zalo" target="_blank" rel="noopener" hidden>Nhắn cho mình trên Zalo 💬</a>
+    <a class="btn" id="facebook" target="_blank" rel="noopener" hidden>Nhắn cho mình trên Facebook 💬</a>
   </section>
 
   <section class="countdown-section">
@@ -981,10 +981,9 @@
       dateISO: "2026-10-24",
       defaultTime: "11:45",
       dateText: "24.10.2026",
-      venue: "Trường Đại học Kinh tế - Luật (UEL), TP.HCM",
+      venue: "Trường Đại học Kinh tế - Luật (UEL), 669 Đỗ Mười, Khu phố 3, Phường Linh Xuân, TP.HCM",
       dress: "Lịch sự, tươi tắn – mình muốn thấy bạn xinh nhất 🌸",
-      mapUrl: "https://maps.google.com",
-      zalo: "https://zalo.me/0900000000",
+      facebook: "https://www.facebook.com/huong.giang.940870",
       portrait: "assets/image.png",
       photos: [
         { src: "assets/newpic/tuoitho.jpg", period: "Tuổi thơ", cap: "Những ngày vô tư, nơi ước mơ đầu tiên bắt đầu." },
@@ -1010,8 +1009,8 @@
     $('time').textContent = eventTime;
     $('venue').textContent = CONFIG.venue;
     $('dress').textContent = CONFIG.dress;
-    $('map').href = CONFIG.mapUrl;
-    $('zalo').href = CONFIG.zalo;
+    $('map').href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(CONFIG.venue);
+    $('facebook').href = CONFIG.facebook;
     if (CONFIG.portrait) { const p = $('portrait'); p.style.backgroundImage = "url('" + CONFIG.portrait + "')"; p.textContent = '' }
     CONFIG.photos.forEach((p, i) => {
       const item = document.createElement('article');
@@ -1069,7 +1068,7 @@
     let dodgeCount = 0;
     function dodge(e) { e.preventDefault(); $('verdict').textContent = dodgeMsgs[Math.min(dodgeCount, dodgeMsgs.length - 1)]; dodgeCount++; const range = Math.min(dodgeCount * 70, 300); const tx = (Math.random() - .5) * range * 2; const ty = (Math.random() - .5) * range; const rot = (Math.random() - .5) * 45; noBtn.style.transform = 'translate(' + tx + 'px,' + ty + 'px) rotate(' + rot + 'deg)'; if (dodgeCount >= dodgeMsgs.length) noBtn.textContent = 'Chấp nhận 😭' }
     noBtn.addEventListener('pointerenter', dodge); noBtn.onclick = dodge;
-    $('yes').onclick = () => { $('verdict').textContent = 'CHẤP THUẬN ✅ Hẹn gặp bạn nha! 🎉'; $('zalo').hidden = false; confetti() };
+    $('yes').onclick = () => { $('verdict').textContent = 'CHẤP THUẬN ✅ Hẹn gặp bạn nha! 🎉'; $('facebook').hidden = false; confetti() };
     function cd() { let ms = new Date(CONFIG.dateISO + 'T' + eventTime + ':00+07:00') - Date.now(); if (isNaN(ms) || ms < 0) ms = 0; const pad = n => String(n).padStart(2, '0'); $('d').textContent = Math.floor(ms / 864e5); $('h').textContent = pad(Math.floor(ms / 36e5) % 24); $('m').textContent = pad(Math.floor(ms / 6e4) % 60); $('s').textContent = pad(Math.floor(ms / 1e3) % 60) }
     cd(); setInterval(cd, 1000);
     const jokes = ['Củ khoai tây này không biết luật.', 'Khoai tây cũng xin được giảm án.', 'Khoai: "Tôi giữ quyền im lặng."', 'Đừng bấm nữa, khoai chóng mặt rồi.', 'Đủ 5 lần! Khoai tây đã được tốt nghiệp danh dự 🎓'];
