@@ -1084,7 +1084,7 @@
     if ($('gen')) $('gen').onclick = renderAdminLinks;
     if ($('copyAll')) $('copyAll').onclick = () => { if (!allLinks.length) renderAdminLinks(); copyText(allLinks.join('\n'), 'Đã copy toàn bộ 29 link!') };
     if ($('closeAdmin')) $('closeAdmin').onclick = () => { $('admin').style.display = 'none' };
-    if (q.get('admin')) { $('cover').classList.add('gone'); document.querySelector('.hero').classList.add('hero-visible'); $('admin').style.display = 'flex'; renderAdminLinks() }
+    if (q.has('admin')) { $('cover').classList.add('gone'); document.querySelector('.hero').classList.add('hero-visible'); $('admin').style.display = 'flex'; renderAdminLinks() }
   </script>
 </body>
 
